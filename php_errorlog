@@ -1,0 +1,1 @@
+[16-Nov-2017 07:06:49 CST6CDT] PHP Fatal error:  Class 'WP_Error' not found in /home/fundscap/staging/3/wp-content/plugins/compare-platforms-calculator/class-calculator-error.php on line 43

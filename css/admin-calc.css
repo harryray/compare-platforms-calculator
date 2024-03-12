@@ -1,0 +1,12 @@
+.form-table .wp-list-table th {
+	width: auto;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+}
+.form-table .wp-list-table td {
+	text-align: center;
+}
+.form-table tr.current {
+	background: #FBF8EF;
+}
