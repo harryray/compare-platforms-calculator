@@ -201,7 +201,7 @@ foreach ($platforms as $platform) {
                         if($calculator_type !== "advisor") {
                         ?>
                         <div class="result-rating rating-<?php echo $rating; ?>">
-                            <div class="rating rating-number"><?php echo $rating; ?>.0</div>
+                            <div class="rating rating-number"><?php echo $rating; ?>/5</div>
                             <div class="rating-bullets">
                                 <div class="bullet"></div>
                                 <div class="bullet"></div>

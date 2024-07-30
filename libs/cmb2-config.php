@@ -706,6 +706,18 @@ function cplat_register_platform_info_metabox() {
 		'id'   => $prefix . 'available_products_isa_note',
 		'type' => 'text'
 	) );
+	$cmb_av_products->add_field( array(
+		'name' => __( 'Lifetime ISAs', 'cmb2' ),
+		'desc' => __( '', 'cmb2' ),
+		'id'   => $prefix . 'available_products_lifetime_isa',
+		'type' => 'checkbox'
+	) );
+	$cmb_av_products->add_field( array(
+		'name' => __( 'Lifetime ISAs Note', 'cmb2' ),
+		'desc' => __( '', 'cmb2' ),
+		'id'   => $prefix . 'available_products_lifetime_isa_note',
+		'type' => 'text'
+	) );
 
 	$cmb_av_products->add_field( array(
 		'name' => __( 'JISAS', 'cmb2' ),
@@ -773,18 +785,6 @@ function cplat_register_platform_info_metabox() {
 			'type' => 'text'
 		) );
 	}else{
-		$cmb_av_products->add_field( array(
-			'name' => __( 'Lifetime ISAs', 'cmb2' ),
-			'desc' => __( '', 'cmb2' ),
-			'id'   => $prefix . 'available_products_lifetime_isa',
-			'type' => 'checkbox'
-		) );
-		$cmb_av_products->add_field( array(
-			'name' => __( 'Lifetime ISAs Note', 'cmb2' ),
-			'desc' => __( '', 'cmb2' ),
-			'id'   => $prefix . 'available_products_lifetime_isa_note',
-			'type' => 'text'
-		) );
 	}
 	//Ticket#307 start
 	$cmb_av_products->add_field( array(

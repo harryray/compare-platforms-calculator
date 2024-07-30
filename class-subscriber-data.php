@@ -101,8 +101,8 @@ class Subscriber_Data {
             'total_savings_and_investments_cash' => 'sanitize_money',
             'total_savings_and_investments_total' => 'sanitize_money',
             'funds_isa_cash'                     => 'sanitize_money',
-			'funds_isa_total'                    => 'sanitize_money',
-			'funds_lifetime_isa_cash'            => 'sanitize_money', //Ticket#307
+						'funds_isa_total'                    => 'sanitize_money',
+						'funds_lifetime_isa_cash'            => 'sanitize_money', //Ticket#307
             'funds_lifetime_isa_total'           => 'sanitize_money', //Ticket#307
             'funds_jisa_cash'                    => 'sanitize_money',
             'funds_jisa_total'                    => 'sanitize_money',
@@ -117,7 +117,7 @@ class Subscriber_Data {
             'funds_offshore_bond_cash'           => 'sanitize_money',
             'funds_offshore_bond_total'           => 'sanitize_money',
             'total_all_cash'                     => 'sanitize_money',
-			'total_all_total'                     => 'sanitize_money',
+						'total_all_total'                     => 'sanitize_money',
 			
 
 			//Begin : RSPL TASK#236
