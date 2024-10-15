@@ -46,13 +46,13 @@ function cplat_save_steps()
   if( $_POST['calculator_type'] == 'simplified' ){
     $data['inv_management_type'] = 'myself';
     $data['total_savings_and_investments_total'] = $_POST['total_savings_and_investments'];
+    $data['investment_products_simplified'] = true;
     // User didn't provide product values
     if ( $_POST['investment_products'] === 'no' && 
     ! empty( $_POST['total_savings_and_investments'] ) ) {
 
       //Split total by 3
       $slice = $_POST['total_savings_and_investments'] / 2;
-
       $data['funds_gia']   = $slice;
       $data['funds_isa']   = $slice;
       $data['funds_jisa']  = 0;
@@ -105,7 +105,6 @@ add_action('init', 'cplat_save_steps');
 function cplat_get_platform_list($user_data, $user_id, $order_by = 'cost_low_high', $update = false)
 {
 
-
   $compare   = null;
   $platforms = null;
   //@todo add server side validation, temporary fix
@@ -134,15 +133,17 @@ function cplat_get_platform_list($user_data, $user_id, $order_by = 'cost_low_hig
   $subscriber_data = new Subscriber_Data();
   $version         = (int) $_POST['version'];
   $platforms       = $subscriber_data->get_user_results_meta($user_id, $version);
+
   if ($update) {
     $user_data = $compare->ctp_api_update_user_data($_POST);
     $user      = wp_get_current_user();
     $subscriber_data->save_user_meta($user, (array) $user_data, $version);
   }
-  if (empty($platforms) || $update || (isset($_SESSION['cplat_update']) && $_SESSION['cplat_update'] == 1) || isset($platforms['message']) || $user_data->update == 1) {
+
+  //if (empty($platforms) || $update || (isset($_SESSION['cplat_update']) && $_SESSION['cplat_update'] == 1) || isset($platforms['message']) || $user_data->update == 1) {
     $platforms = $compare->get_platform_queue();
     $subscriber_data->save_user_results_meta($user_id, $platforms, $version);
-  }
+  //}
   $count = count($platforms);
 
 

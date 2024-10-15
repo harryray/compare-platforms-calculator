@@ -327,6 +327,56 @@ function cplat_update_results_callback() {
 	if ( $user_data ) {
         //RSPL Task#37
 		$platforms_data = cplat_get_platform_list( $user->data, $user->ID, $_POST['order_by'], false );
+
+        $platforms_queue = $platforms_data['list'];
+
+
+        // HTB SORTING
+        switch($_POST['order_by']) {
+        case 'cost_low_high':
+            $cost_order = array();
+            foreach ( $platforms_queue as $key => $row ) {
+                $cost_order[ $key ] = $row['cost'];
+            }
+            array_multisort($cost_order, SORT_ASC, $platforms_queue );
+            $platforms_data['list'] = $platforms_queue;
+            break;
+        case 'cost_high_low':
+            $cost_order = array();
+            foreach ( $platforms_queue as $key => $row ) {
+                $cost_order[ $key ] = $row['cost'];
+            }
+
+            array_multisort($cost_order, SORT_DESC, $platforms_queue );
+            $platforms_data['list'] = $platforms_queue;
+            break;
+        case 'rating_high_low':
+            $rating_groups = array();
+            foreach ( $platforms_queue as $key => $row ) {
+                $rating_groups[$key] = $row['data']['rating'];
+            }
+            array_multisort($rating_groups, SORT_DESC, $platforms_queue );
+            $platforms_data['list'] = $platforms_queue;
+            break;
+        case 'rating_low_high':
+            $rating_groups = array();
+            foreach ( $platforms_queue as $key => $row ) {
+                $rating_groups[$key] = $row['data']['rating'];
+            }
+            array_multisort($rating_groups, SORT_ASC, $platforms_queue );
+            $platforms_data['list'] = $platforms_queue;
+            break;
+        case 'alphabetical_az':
+            $alphabetical = array();
+            foreach ( $platforms_queue as $key => $row ) {
+                $alphabetical[ $key ] = strtolower( $row['data']['platform_name'] );
+            }
+            array_multisort($alphabetical, SORT_ASC, SORT_STRING, $platforms_queue );
+            $platforms_data['list'] = $platforms_queue;
+            break;
+        }
+        // /HTB SORTING
+
 		$platforms      = $platforms_data['list'];
 		$results_count  = $platforms_data['count'];
 	} else {
@@ -731,7 +781,20 @@ function cplat_get_results_callback() {
     if ($user_data) {
         $platforms_data = cplat_get_platform_list($user_data, $user->ID);
         $platforms = $platforms_data['list'];
+        //die(var_dump($platforms));
         $results_count = $platforms_data['count'];
+        
+        // manually sort
+        $platforms_queue  = $platforms_data['list'];
+        $cost_order = array();
+        foreach ( $platforms_queue as $key => $row ) {
+            $cost_order[ $key ] = $row['cost'];
+        }
+        array_multisort($cost_order, SORT_ASC, $platforms );
+        //array_multisort($cost_order, SORT_ASC, $platforms_queue );
+        $platforms_data['list'] = $platforms_queue;
+
+
     } else {
         $platforms = array();
         $results_count = 0;

@@ -7,6 +7,7 @@ parse_str($url_parts['query'], $url_params);
 $user = wp_get_current_user();
 $inv_management_type = $calc_user->data->inv_management_type;
 $user_type = $calc_user->data->user_type;
+//var_dump($calc_user->data);
 //$user_type = ( $user_type && $user_type == 'adviser' ? 'advisor' : 'subscriber' );
 $roles_commas = $user_type;
 if (isset($url_params['main_version']) && !empty($url_params['main_version'])) {
@@ -91,6 +92,78 @@ if($calc_user->data->embedded_calculator || strpos($url_parts['path'], 'embedded
     </div>
 </div>
 
+<style>
+div.etf-tooltip {
+  color: white;
+  font-weight: 300;
+  display: none;
+  background: #034F52;
+  width: 340px;
+  position: absolute;
+  padding: 20px;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, calc(-100% - 5px));
+  max-width: 75vw;
+  display: none;
+  border-radius: 16px;
+  font-size: 12px;
+}
+div.etf-tooltip p {
+    margin-bottom: 0;
+}
+div.etf-tooltip:hover {
+  display: block;
+}
+
+div.etf-tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 10px 0 10px;
+  border-style: solid;
+  border-color: #034F52 transparent transparent transparent;
+  display: block;
+  width: 0;
+  height: 0;
+}
+.result-main-col.simplified-result .num-span {
+    position: relative;
+    font-size: 10px;
+}
+.result-main-col .num-span:hover div.etf-tooltip {
+    display: block;
+}
+@media(max-width: 1500px) and (min-width: 1400px) {
+    div.etf-tooltip {
+        left: 100%;
+        transform: translate(-40%, calc(-100% - 20px));
+    }
+    div.etf-tooltip::before {
+        left: 60px;
+    }
+}
+@media(max-width: 1320px) {
+    div.etf-tooltip {
+        left: 100%;
+        transform: translate(-40%, calc(-100% - 20px));
+    }
+    div.etf-tooltip::before {
+        left: 60px;
+    }
+}
+@media(max-width: 620px) {
+    div.etf-tooltip {
+        left: 50%;
+        transform: translate(-50%, calc(-100% - 20px));
+    }
+    div.etf-tooltip::before {
+        left: 50%;
+    }
+}
+</style>
 
 <?php
 $count      = 0;
@@ -111,8 +184,7 @@ if ($show_years) {
     }
 }
 foreach ($platforms as $platform) {
-  $platform_data = $platform['data'];
-  var_dump($platform_data['platform_name']);
+    $platform_data = $platform['data'];
 
 	// RSPL Task#164
 	$continue_listing = 1;
@@ -127,11 +199,8 @@ foreach ($platforms as $platform) {
     if( $calc_user->data->recommended_portfolio && $platform_average_rating  < 3  ){
         $continue_listing = 0;
     }
-  var_dump("platform_average_rating " . $platform_average_rating);
-  var_dump("continue_listing " . $continue_listing);
     
 	$status = get_post_status( $platform_data['platform_id'] );
-  var_dump("publish_status " . $status);
 	if ( $status !== 'publish' ) {
 		continue;
 	}
@@ -141,14 +210,11 @@ foreach ($platforms as $platform) {
     $platform_cost = $platform['cost'];
     /*Simlified total*/
     if (isset($investment_products_simplified)) {
-        $platform_cost = $platform['simplified_total'];
+        //$platform_cost = $platform['simplified_total']; HTB 07/10/24 REMOVE THIS
         if( $platform_cost <= 0 ){
-            $continue_listing = 0;
+         //   $continue_listing = 0; HTB 07/10/24 REMOVE THIS
         }
     }
-    var_dump("continue_listing II " . $continue_listing);
-
-    echo "<br /><hr /><br />";
     /*simplified total*/
     $feat_image    = wp_get_attachment_image_src(get_post_thumbnail_id($platform_data['platform_id']), 'full');
 
@@ -167,6 +233,18 @@ foreach ($platforms as $platform) {
         }
     }
 
+    // echo "<pre>";
+    // var_dump($platform['custody_charges']['ex_instruments_total']);
+    // var_dump($platform['custody_charges']['funds_total']);
+    // var_dump(isset($investment_products_simplified));
+    // echo "</pre>";
+    
+    $platform['etf_only'] = false;
+
+    if(($platform['custody_charges']['ex_instruments_total'] > 0 && $platform['custody_charges']['funds_total'] == 0 && isset($investment_products_simplified))) {
+        $platform['etf_only'] = true;
+    }
+
     // RSPL Task#164
     if ($continue_listing == 1) {
         $count++;
@@ -174,9 +252,23 @@ foreach ($platforms as $platform) {
         <div class="platform-result-item <?php echo $first . '' . $last . ' ' . $stripe . ' ' . $inv_type_class . ' ' . $result_listing_class; ?>" id="platform-info-<?php echo $platform_data['id'] ?>" data-count="<?php echo $count; ?>">
 
             <div class="main-row clearfix">
-                <div class="result-main-col dog platform-image-div <?php echo 'logo-image-'.get_post_field( 'post_name', $platform_data['platform_id'] );  ?>">
+                <div class="result-main-col platform-image-div <?php echo 'logo-image-'.get_post_field( 'post_name', $platform_data['platform_id'] );  ?> <?php echo $calculator_type == 'simplified' ? 'simplified-result' : ''; ?>">
                     <img src="<?php echo isset($feat_image[0]) ? esc_url($feat_image[0]) : ''; ?>" />
-                    <div class="num-span"><span class="<?php echo $span_class ?>"> <?php echo $num ?></span></div>
+                    <div class="num-span"><?php if($num > 0) { ?><span class="<?php echo $span_class ?>">Scenario <?php echo $num ?></span><?php } ?></div>
+                    <?php if($calculator_type == 'simplified') { ?>
+                        <?php if($platform['etf_only']) { ?>
+                            <div class="num-span">
+                                <span class="step">ETF ONLY&nbsp;&nbsp;ⓘ</span>
+                                <div class="etf-tooltip"><p>An ETF, or Exchange Traded Fund is a simple and easy way to get access to investment markets. It is a pre-defined basket of bonds, stocks or commodities that we wrap into a fund and then we list onto the exchange so that everyone can use it.</p></div>
+                            </div>
+                        <?php } else { ?>
+
+                            <div class="num-span">
+                                <span class="step">FUND ONLY&nbsp;&nbsp;ⓘ</span>
+                                <div class="etf-tooltip"><p>An ETF, or Exchange Traded Fund is a simple and easy way to get access to investment markets. It is a pre-defined basket of bonds, stocks or commodities that we wrap into a fund and then we list onto the exchange so that everyone can use it.</p></div>
+                            </div>
+                        <?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="result-main-col">
                     <div class="main-result-total"><span class="fee-title-mobile">FEE: </span><?php echo $currency . '' . esc_money($platform_cost); ?>

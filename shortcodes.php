@@ -864,6 +864,11 @@ function cplat_vendor_account() {
     $platform_post  = $platform_data['platform'][0];
     $platform_title = $platform_post['platform_name'];
 
+    if ( is_user_logged_in() || ! cplat_check_user_role( 'platinum_vendor' ) ) {
+
+      echo "<div class='htb-sandbox-link-wrap'><a id='htb-sandbox-link' target='_blank' href='/sandbox/?pid=".$platform_id."&uid=".$user->ID."'>".$platform_title." Sandbox</a></div>";
+    }
+
   } else {
     $all_data       = false;
     $platform_title = '';

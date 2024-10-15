@@ -503,6 +503,11 @@ $step_count = 2;
                         <div class="pt-4">
                             <div class="col-md-8 col-12">
                                 <?php
+								if ( $user_type != 'advisor' ) {
+									$result_page_page_note_acf = ctp_get_questions_option('result_page_page_consumer_note');
+								} else {
+									$result_page_page_note_acf = ctp_get_questions_option('result_page_page_note');
+								}
                                 if (!empty($result_page_page_note_acf)) {
                                     echo '<div class="charges-note">' . $result_page_page_note_acf . '</div>';
                                 }

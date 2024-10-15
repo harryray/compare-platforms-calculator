@@ -326,6 +326,7 @@ roles_arr = role.split(',');
                 jQuery('.results-email-pf,a.results-print.results-print-pf').css('cursor', 'not-allowed');
             },
             success: function (result) {
+                console.log(result);
                 //RSPL Task#83
                 // s_platform_result_response = result.popup_content;
                 // Important code for printing start
