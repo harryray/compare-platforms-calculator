@@ -149,9 +149,6 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
         console.log(_.max(aua_to))
         if (aua_to.length) {
             if (!_.contains(aua_to, null) && this.user_data.total_all > _.max(aua_to)) {
-                console.log('||||||||||| EXCLUDED DUE TO AUA TO ')
-                console.log(platform)
-                console.log('||||||||||| EXCLUDED DUE TO AUA TO END')
                 this.is_excluded = true;
             }
         }
@@ -584,11 +581,7 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
         let growth_rate = (is_growth == 'yes' ? 4 : $this.user_data.growth_rate);
         growth_rate = 1 + growth_rate / 100;
         // End: Ticket#243
-        console.log('|||||||||')
-        console.log('Platform called ' + this.platform.platform_name)
         if (this.cash_tiered) {
-            
-            console.log('Platform is tiered yes')
             /**
              * Calculate cost for each product
              */
@@ -607,9 +600,6 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
                 }
                 /*Begin: Ticket#243*/
                 let cash_tier = $this.combine_tiers(constants.INV_TYPE_CASH, users_product_amount);
-
-                console.log('cash_tier')
-                console.log(cash_tier)
 
                 //End : Ticket#236
                 _.each(cash_tier, function (tier_key) {
@@ -653,22 +643,22 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
                     if ($this.has_vat($this.platform_data_cash[tier_key]['vat'])) {
                         total_product += $this.get_vat_amount(total_product);
                     }
-                    console.log('aua_to')
-                    console.log(aua_to)
-                    console.log('aua_from')
-                    console.log(aua_from)
-                    console.log('users_product_amount')
-                    console.log(users_product_amount)
-                    console.log('total_product')
-                    console.log(total_product)
-                    console.log("$this.platform_data_cash[tier_key]['calc_type']")
-                    console.log($this.platform_data_cash[tier_key]['calc_type'])
-                    console.log("$this.platform_data_cash[tier_key][product]")
-                    console.log($this.platform_data_cash[tier_key][product])
-                    console.log("product_amount")
-                    console.log(product_amount)
-                    console.log('has vat?')
-                    console.log($this.has_vat($this.platform_data_cash[tier_key]['vat']))
+                    // console.log('aua_to')
+                    // console.log(aua_to)
+                    // console.log('aua_from')
+                    // console.log(aua_from)
+                    // console.log('users_product_amount')
+                    // console.log(users_product_amount)
+                    // console.log('total_product')
+                    // console.log(total_product)
+                    // console.log("$this.platform_data_cash[tier_key]['calc_type']")
+                    // console.log($this.platform_data_cash[tier_key]['calc_type'])
+                    // console.log("$this.platform_data_cash[tier_key][product]")
+                    // console.log($this.platform_data_cash[tier_key][product])
+                    // console.log("product_amount")
+                    // console.log(product_amount)
+                    // console.log('has vat?')
+                    // console.log($this.has_vat($this.platform_data_cash[tier_key]['vat']))
                     /*Begin: Ticket#243*/
                     if (over_years === 'in_x_years' || over_years === 'over_years') {
                         cash_int[product] = users_product_amount + total_product;
@@ -677,7 +667,8 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
                         cash_int[product] = users_product_amount + total_product;
                         $this.cash[product] += total_product;
                     }
-                    total = total + total_product;
+                    //total = total + total_product;
+                    total = total_product;
                     /*End: Ticket#243*/
                 });
             });
