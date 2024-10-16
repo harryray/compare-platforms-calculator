@@ -1,0 +1,22 @@
+{
+  "name": "ctp-api",
+  "version": "2.0.0",
+  "scripts": {
+    "start": "sls offline"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "googleapis": "^35.0.0",
+    "mysql": "2.16.0",
+    "node-cmd": "^3.0.0",
+    "promise": "^8.0.1",
+    "serverless": "^1.32.0",
+    "serverless-offline": "5.12.1",
+    "underscore-node": "^0.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3",
+    "serverless-domain-manager": "^2.6.0"
+  }
+}
