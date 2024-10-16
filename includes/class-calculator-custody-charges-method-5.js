@@ -635,7 +635,8 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
                             }
                         }
                     }
-                    total_product += $this.get_cost_of_product(
+                    //total_product += $this.get_cost_of_product(
+                    total_product = $this.get_cost_of_product(
                         $this.platform_data_cash[tier_key]['calc_type'],
                         $this.platform_data_cash[tier_key][product],
                         product_amount
@@ -665,10 +666,11 @@ module.exports.Calculator_Custody_Charges_Method_5 = class Calculator_Custody_Ch
                         $this.cash[product] = total_product;
                     } else {
                         cash_int[product] = users_product_amount + total_product;
+                        //$this.cash[product] += total_product; HTB REMOVED AS PART OF THE RAYMOND JAMES TIERED FIX 16102024
                         $this.cash[product] += total_product;
                     }
                     //total = total + total_product;
-                    total = total_product;
+                    total = total + total_product;
                     /*End: Ticket#243*/
                 });
             });
