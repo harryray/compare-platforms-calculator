@@ -673,6 +673,11 @@ module.exports.Calculator_Custody_Charges_Method_4 = class Calculator_Custody_Ch
                     if (over_years === 'over_years' && year != 1) {
                         users_product_amount = p_cash_int[product] + Funds_planning
                     }
+
+                    if(users_product_amount > 0) {
+                        users_product_amount = parseFloat(users_product_amount)
+                    }
+                    
                     /*Begin: Ticket#243*/
                     let total_product = $this.get_cost_of_product(
                         $this.platform_data_cash[key]['calc_type'],
